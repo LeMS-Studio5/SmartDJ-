@@ -7,6 +7,7 @@ using System.Windows.Forms;
 namespace SmartDJ__{
     public partial class Form1 : Form{
         Dictionary<String,SongDetails> fileTags = new Dictionary<String, SongDetails>();
+        Dictionary<String, double> Songscores = new Dictionary<String, double>();
         public Form1(){
             InitializeComponent();
         }
@@ -15,6 +16,7 @@ namespace SmartDJ__{
         }
         private void ScanFolder(string dirPath){
             foreach (String fil in Directory.GetFiles(dirPath, "*.mp3", SearchOption.AllDirectories)){
+                Status("Loading " + fil);
                 SongDetails S = new SongDetails(fil);
                 if (!fileTags.ContainsKey(id(S))){
                     ListViewItem l = new ListViewItem("?");
@@ -33,7 +35,30 @@ namespace SmartDJ__{
         private void btnOpenFolders_Click(object sender, EventArgs e){
             if (fbdMusic.ShowDialog() == DialogResult.OK) { 
                 ScanFolder(fbdMusic.SelectedPath);
+                CompareFiles();
               }
+        }
+        private String idsOrdered(String id1,String id2)
+        {
+            String[] ids = new String[] { id1, id2 };
+            Array.Sort(ids);
+            return ids[0]+ids[1];
+        }
+        private void CompareFiles()
+        {
+            foreach(KeyValuePair<String,SongDetails> keyValue in fileTags)
+            {
+                foreach (KeyValuePair<String, SongDetails> keyValue2 in fileTags)
+                {
+                    //if (keyValue.Key != keyValue2.Key)
+                    {
+                        Status("Comparing " + keyValue.Value.Title + " to " + keyValue2.Value.Title);
+                        double s = Compare(keyValue.Value, keyValue2.Value);
+                        String k = idsOrdered(keyValue.Key, keyValue2.Key);
+                        if (! Songscores.ContainsKey(k))Songscores.Add(k, s);
+                    }
+                }
+            }
         }
         private double inAnotherArray(String[] arr1,String[] arr2){
             if (arr1.Length == 0 && arr2.Length == 0) return 100;
@@ -69,13 +94,16 @@ namespace SmartDJ__{
             dblSim += CompareStrings(fil1.Language, fil2.Language);
             return dblSim / 13.0;
         }
+        private void Status(String msg)
+        {
+            lblStatus.Text = "Status: " + msg;
+            lblScore.Invalidate();
+        }
         private void btnCompare_Click(object sender, EventArgs e){
-            SongDetails fil1 = fileTags[listView1.FocusedItem.Tag.ToString()];
+            String fil1 = listView1.FocusedItem.Tag.ToString();
             for (int i=0; i < listView2.Items.Count; i++){
-                SongDetails fil2 = fileTags[listView2.Items[i].Tag.ToString()];
-                listView2.Items[i].SubItems[0].Text = Compare(fil1, fil2).ToString("000.00");
+                listView2.Items[i].SubItems[0].Text = Songscores[idsOrdered(fil1, listView2.Items[i].Tag.ToString())].ToString("000.00");
             }
-            lblFirstSong.Text = "First Song: " + fil1.Title;
             listView2.Sort();
         }
         private double CompareStrings(String str1, String str2){
@@ -138,7 +166,7 @@ namespace SmartDJ__{
             itms.Add(new ListViewItem(new string[] { "Country", fil1.MusicBrainzReleaseCountry, fil2.MusicBrainzReleaseCountry, CompareStrings(fil1.MusicBrainzReleaseCountry, fil2.MusicBrainzReleaseCountry).ToString() }));
             itms.Add(new ListViewItem(new string[] { "Language", fil1.Language, fil2.Language, CompareStrings(fil1.Language,fil2.Language).ToString() }));
             ltvDetail.Items.AddRange(itms.ToArray());
-            lblSecondSong.Text = "Second Song: " + fil2.Title;
+            //lblSecondSong.Text = "Second Song: " + fil2.Title;
             lblScore.Text = "Overall Score: " +Compare(fil1, fil2).ToString("000.00");
         }
         private double BPMDif(Int32 bpm1, Int32 bpm2){
@@ -206,6 +234,20 @@ namespace SmartDJ__{
             //GFm = 84375,
             //Gm = 87500,
             //GSm = 90625,
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            if (sfdScores.ShowDialog() == DialogResult.OK)
+            {
+            List<String> lstScores = new List<string>();
+            foreach (KeyValuePair<String, double> keyValue in Songscores)
+            {
+                lstScores.Add(keyValue.Key + "," + keyValue.Value);
+            }
+                File.WriteAllLines(sfdScores.FileName, lstScores.ToArray());
+                MessageBox.Show("File Saved");
+            }
         }
     }
 }

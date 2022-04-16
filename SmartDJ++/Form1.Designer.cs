@@ -45,7 +45,6 @@ namespace SmartDJ__
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnCompare = new System.Windows.Forms.Button();
-            this.lblFirstSong = new System.Windows.Forms.Label();
             this.ltvDetail = new System.Windows.Forms.ListView();
             this.type = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.First_Song = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -53,8 +52,10 @@ namespace SmartDJ__
             this.Scored = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnDetails = new System.Windows.Forms.Button();
             this.lblScore = new System.Windows.Forms.Label();
-            this.lblSecondSong = new System.Windows.Forms.Label();
             this.btnOpenFolders = new System.Windows.Forms.Button();
+            this.lblStatus = new System.Windows.Forms.Label();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.sfdScores = new System.Windows.Forms.SaveFileDialog();
             this.SuspendLayout();
             // 
             // fbdMusic
@@ -165,18 +166,9 @@ namespace SmartDJ__
             this.btnCompare.Name = "btnCompare";
             this.btnCompare.Size = new System.Drawing.Size(75, 23);
             this.btnCompare.TabIndex = 3;
-            this.btnCompare.Text = "&Compare";
+            this.btnCompare.Text = "&Compare Songs";
             this.btnCompare.UseVisualStyleBackColor = true;
             this.btnCompare.Click += new System.EventHandler(this.btnCompare_Click);
-            // 
-            // lblFirstSong
-            // 
-            this.lblFirstSong.AutoSize = true;
-            this.lblFirstSong.Location = new System.Drawing.Point(93, 16);
-            this.lblFirstSong.Name = "lblFirstSong";
-            this.lblFirstSong.Size = new System.Drawing.Size(57, 13);
-            this.lblFirstSong.TabIndex = 4;
-            this.lblFirstSong.Text = "First Song:";
             // 
             // ltvDetail
             // 
@@ -233,15 +225,6 @@ namespace SmartDJ__
             this.lblScore.TabIndex = 7;
             this.lblScore.Text = "Overall Score: ";
             // 
-            // lblSecondSong
-            // 
-            this.lblSecondSong.AutoSize = true;
-            this.lblSecondSong.Location = new System.Drawing.Point(747, 17);
-            this.lblSecondSong.Name = "lblSecondSong";
-            this.lblSecondSong.Size = new System.Drawing.Size(75, 13);
-            this.lblSecondSong.TabIndex = 8;
-            this.lblSecondSong.Text = "Second Song:";
-            // 
             // btnOpenFolders
             // 
             this.btnOpenFolders.Location = new System.Drawing.Point(12, 16);
@@ -252,17 +235,42 @@ namespace SmartDJ__
             this.btnOpenFolders.UseVisualStyleBackColor = true;
             this.btnOpenFolders.Click += new System.EventHandler(this.btnOpenFolders_Click);
             // 
+            // lblStatus
+            // 
+            this.lblStatus.AutoSize = true;
+            this.lblStatus.Location = new System.Drawing.Point(93, 21);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(40, 13);
+            this.lblStatus.TabIndex = 10;
+            this.lblStatus.Text = "Status:";
+            // 
+            // btnSave
+            // 
+            this.btnSave.Location = new System.Drawing.Point(1338, 16);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(82, 23);
+            this.btnSave.TabIndex = 11;
+            this.btnSave.Text = "&Save Scores";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // sfdScores
+            // 
+            this.sfdScores.DefaultExt = "txt";
+            this.sfdScores.Filter = "Text Files|*.txt";
+            this.sfdScores.RestoreDirectory = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1432, 506);
+            this.Controls.Add(this.btnSave);
+            this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.btnOpenFolders);
-            this.Controls.Add(this.lblSecondSong);
             this.Controls.Add(this.lblScore);
             this.Controls.Add(this.btnDetails);
             this.Controls.Add(this.ltvDetail);
-            this.Controls.Add(this.lblFirstSong);
             this.Controls.Add(this.btnCompare);
             this.Controls.Add(this.listView2);
             this.Controls.Add(this.listView1);
@@ -290,7 +298,6 @@ namespace SmartDJ__
         private System.Windows.Forms.Button btnCompare;
         private System.Windows.Forms.ColumnHeader Score;
         private System.Windows.Forms.ColumnHeader columnHeader6;
-        private System.Windows.Forms.Label lblFirstSong;
         private System.Windows.Forms.ListView ltvDetail;
         private System.Windows.Forms.ColumnHeader First_Song;
         private System.Windows.Forms.ColumnHeader Second_Song;
@@ -298,8 +305,10 @@ namespace SmartDJ__
         private System.Windows.Forms.Button btnDetails;
         private System.Windows.Forms.ColumnHeader type;
         private System.Windows.Forms.Label lblScore;
-        private System.Windows.Forms.Label lblSecondSong;
         private System.Windows.Forms.Button btnOpenFolders;
+        private System.Windows.Forms.Label lblStatus;
+        private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.SaveFileDialog sfdScores;
     }
 }
 
