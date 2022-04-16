@@ -29,55 +29,64 @@ namespace SmartDJ__
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnOpen = new System.Windows.Forms.Button();
             this.fbdMusic = new System.Windows.Forms.FolderBrowserDialog();
             this.listView1 = new System.Windows.Forms.ListView();
+            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Title = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Album = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Artist = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Genre = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Year = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.listView2 = new System.Windows.Forms.ListView();
+            this.Score = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnCompare = new System.Windows.Forms.Button();
-            this.lblOutput = new System.Windows.Forms.Label();
+            this.lblFirstSong = new System.Windows.Forms.Label();
+            this.ltvDetail = new System.Windows.Forms.ListView();
+            this.type = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.First_Song = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Second_Song = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Scored = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.btnDetails = new System.Windows.Forms.Button();
+            this.lblScore = new System.Windows.Forms.Label();
+            this.lblSecondSong = new System.Windows.Forms.Label();
+            this.btnOpenFolders = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
-            // btnOpen
-            // 
-            this.btnOpen.Location = new System.Drawing.Point(12, 12);
-            this.btnOpen.Name = "btnOpen";
-            this.btnOpen.Size = new System.Drawing.Size(75, 23);
-            this.btnOpen.TabIndex = 0;
-            this.btnOpen.Text = "&Open File";
-            this.btnOpen.UseVisualStyleBackColor = true;
-            this.btnOpen.Click += new System.EventHandler(this.btnOpen_Click);
             // 
             // fbdMusic
             // 
+            this.fbdMusic.Description = "Choose which folder to scan";
             this.fbdMusic.RootFolder = System.Environment.SpecialFolder.DesktopDirectory;
-            this.fbdMusic.SelectedPath = "H:\\Music\\3-2-1 Penguins";
             this.fbdMusic.ShowNewFolderButton = false;
             // 
             // listView1
             // 
+            this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader6,
             this.Title,
             this.Album,
             this.Artist,
             this.Genre,
             this.Year});
+            this.listView1.FullRowSelect = true;
             this.listView1.HideSelection = false;
             this.listView1.Location = new System.Drawing.Point(12, 50);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(610, 361);
+            this.listView1.Size = new System.Drawing.Size(658, 444);
             this.listView1.TabIndex = 1;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader6
+            // 
+            this.columnHeader6.Text = "";
+            this.columnHeader6.Width = 0;
             // 
             // Title
             // 
@@ -101,38 +110,53 @@ namespace SmartDJ__
             // 
             // listView2
             // 
+            this.listView2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.listView2.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.Score,
             this.columnHeader1,
             this.columnHeader2,
             this.columnHeader3,
             this.columnHeader4,
             this.columnHeader5});
+            this.listView2.FullRowSelect = true;
             this.listView2.HideSelection = false;
-            this.listView2.Location = new System.Drawing.Point(682, 50);
+            this.listView2.Location = new System.Drawing.Point(676, 50);
             this.listView2.Name = "listView2";
-            this.listView2.Size = new System.Drawing.Size(610, 361);
+            this.listView2.Size = new System.Drawing.Size(506, 444);
+            this.listView2.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.listView2.TabIndex = 2;
             this.listView2.UseCompatibleStateImageBehavior = false;
             this.listView2.View = System.Windows.Forms.View.Details;
             // 
+            // Score
+            // 
+            this.Score.DisplayIndex = 5;
+            this.Score.Text = "Score";
+            // 
             // columnHeader1
             // 
+            this.columnHeader1.DisplayIndex = 0;
             this.columnHeader1.Text = "Title";
             // 
             // columnHeader2
             // 
+            this.columnHeader2.DisplayIndex = 1;
             this.columnHeader2.Text = "Album";
             // 
             // columnHeader3
             // 
+            this.columnHeader3.DisplayIndex = 2;
             this.columnHeader3.Text = "Artist";
             // 
             // columnHeader4
             // 
+            this.columnHeader4.DisplayIndex = 3;
             this.columnHeader4.Text = "Genre";
             // 
             // columnHeader5
             // 
+            this.columnHeader5.DisplayIndex = 4;
             this.columnHeader5.Text = "Year";
             // 
             // btnCompare
@@ -145,35 +169,111 @@ namespace SmartDJ__
             this.btnCompare.UseVisualStyleBackColor = true;
             this.btnCompare.Click += new System.EventHandler(this.btnCompare_Click);
             // 
-            // lblOutput
+            // lblFirstSong
             // 
-            this.lblOutput.AutoSize = true;
-            this.lblOutput.Location = new System.Drawing.Point(27, 453);
-            this.lblOutput.Name = "lblOutput";
-            this.lblOutput.Size = new System.Drawing.Size(35, 13);
-            this.lblOutput.TabIndex = 4;
-            this.lblOutput.Text = "label1";
+            this.lblFirstSong.AutoSize = true;
+            this.lblFirstSong.Location = new System.Drawing.Point(93, 16);
+            this.lblFirstSong.Name = "lblFirstSong";
+            this.lblFirstSong.Size = new System.Drawing.Size(57, 13);
+            this.lblFirstSong.TabIndex = 4;
+            this.lblFirstSong.Text = "First Song:";
+            // 
+            // ltvDetail
+            // 
+            this.ltvDetail.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ltvDetail.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.type,
+            this.First_Song,
+            this.Second_Song,
+            this.Scored});
+            this.ltvDetail.FullRowSelect = true;
+            this.ltvDetail.HideSelection = false;
+            this.ltvDetail.Location = new System.Drawing.Point(1188, 50);
+            this.ltvDetail.Name = "ltvDetail";
+            this.ltvDetail.Size = new System.Drawing.Size(232, 444);
+            this.ltvDetail.Sorting = System.Windows.Forms.SortOrder.Ascending;
+            this.ltvDetail.TabIndex = 5;
+            this.ltvDetail.UseCompatibleStateImageBehavior = false;
+            this.ltvDetail.View = System.Windows.Forms.View.Details;
+            // 
+            // type
+            // 
+            this.type.Text = "Tag";
+            // 
+            // First_Song
+            // 
+            this.First_Song.Text = "First Song";
+            // 
+            // Second_Song
+            // 
+            this.Second_Song.Text = "Second Song";
+            // 
+            // Scored
+            // 
+            this.Scored.Text = "Score";
+            // 
+            // btnDetails
+            // 
+            this.btnDetails.Location = new System.Drawing.Point(1107, 16);
+            this.btnDetails.Name = "btnDetails";
+            this.btnDetails.Size = new System.Drawing.Size(75, 23);
+            this.btnDetails.TabIndex = 6;
+            this.btnDetails.Text = "&Details";
+            this.btnDetails.UseVisualStyleBackColor = true;
+            this.btnDetails.Click += new System.EventHandler(this.btnDetails_Click);
+            // 
+            // lblScore
+            // 
+            this.lblScore.AutoSize = true;
+            this.lblScore.Location = new System.Drawing.Point(1189, 21);
+            this.lblScore.Name = "lblScore";
+            this.lblScore.Size = new System.Drawing.Size(77, 13);
+            this.lblScore.TabIndex = 7;
+            this.lblScore.Text = "Overall Score: ";
+            // 
+            // lblSecondSong
+            // 
+            this.lblSecondSong.AutoSize = true;
+            this.lblSecondSong.Location = new System.Drawing.Point(747, 17);
+            this.lblSecondSong.Name = "lblSecondSong";
+            this.lblSecondSong.Size = new System.Drawing.Size(75, 13);
+            this.lblSecondSong.TabIndex = 8;
+            this.lblSecondSong.Text = "Second Song:";
+            // 
+            // btnOpenFolders
+            // 
+            this.btnOpenFolders.Location = new System.Drawing.Point(12, 16);
+            this.btnOpenFolders.Name = "btnOpenFolders";
+            this.btnOpenFolders.Size = new System.Drawing.Size(75, 23);
+            this.btnOpenFolders.TabIndex = 9;
+            this.btnOpenFolders.Text = "&Open Folder";
+            this.btnOpenFolders.UseVisualStyleBackColor = true;
+            this.btnOpenFolders.Click += new System.EventHandler(this.btnOpenFolders_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1432, 506);
-            this.Controls.Add(this.lblOutput);
+            this.Controls.Add(this.btnOpenFolders);
+            this.Controls.Add(this.lblSecondSong);
+            this.Controls.Add(this.lblScore);
+            this.Controls.Add(this.btnDetails);
+            this.Controls.Add(this.ltvDetail);
+            this.Controls.Add(this.lblFirstSong);
             this.Controls.Add(this.btnCompare);
             this.Controls.Add(this.listView2);
             this.Controls.Add(this.listView1);
-            this.Controls.Add(this.btnOpen);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "SmartDJ++";
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Button btnOpen;
         private System.Windows.Forms.FolderBrowserDialog fbdMusic;
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ColumnHeader Title;
@@ -188,7 +288,18 @@ namespace SmartDJ__
         private System.Windows.Forms.ColumnHeader columnHeader4;
         private System.Windows.Forms.ColumnHeader columnHeader5;
         private System.Windows.Forms.Button btnCompare;
-        private System.Windows.Forms.Label lblOutput;
+        private System.Windows.Forms.ColumnHeader Score;
+        private System.Windows.Forms.ColumnHeader columnHeader6;
+        private System.Windows.Forms.Label lblFirstSong;
+        private System.Windows.Forms.ListView ltvDetail;
+        private System.Windows.Forms.ColumnHeader First_Song;
+        private System.Windows.Forms.ColumnHeader Second_Song;
+        private System.Windows.Forms.ColumnHeader Scored;
+        private System.Windows.Forms.Button btnDetails;
+        private System.Windows.Forms.ColumnHeader type;
+        private System.Windows.Forms.Label lblScore;
+        private System.Windows.Forms.Label lblSecondSong;
+        private System.Windows.Forms.Button btnOpenFolders;
     }
 }
 
