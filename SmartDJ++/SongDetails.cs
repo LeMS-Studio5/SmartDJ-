@@ -5,21 +5,24 @@ namespace SmartDJ__{
     class SongDetails{
         public SongDetails(String songPath){
             if (!File.Exists(songPath)) throw new Exception("File does not exists");
-            TagLib.File f = TagLib.File.Create(songPath);
-            MusicBrainzTrackId = f.Tag.MusicBrainzTrackId;
-            Title = f.Tag.Title;
-            Duration = f.Properties.Duration;
-            Year = (Int32)f.Tag.Year;
-            Album = f.Tag.Album;
-            Composers = f.Tag.Composers;
-            InitialKey = f.Tag.InitialKey;
-            Language = customField(f, "TLAN");
-            MusicBrainzReleaseCountry = f.Tag.MusicBrainzReleaseCountry;
-            BeatsPerMinute = (Int32)f.Tag.BeatsPerMinute;
-            RecordLabel = f.Tag.Publisher;
-            Genres = f.Tag.Genres;
-            Performers = f.Tag.Performers;
-            AlbumArtists = f.Tag.AlbumArtists;
+            else
+            {
+                TagLib.File f = TagLib.File.Create(songPath);
+                MusicBrainzTrackId = f.Tag.MusicBrainzTrackId;
+                Title = f.Tag.Title;
+                Duration = f.Properties.Duration;
+                Year = (Int32)f.Tag.Year;
+                Album = f.Tag.Album;
+                Composers = f.Tag.Composers;
+                InitialKey = f.Tag.InitialKey;
+                Language = customField(f, "TLAN");
+                MusicBrainzReleaseCountry = f.Tag.MusicBrainzReleaseCountry;
+                BeatsPerMinute = (Int32)f.Tag.BeatsPerMinute;
+                RecordLabel = f.Tag.Publisher;
+                Genres = f.Tag.Genres;
+                Performers = f.Tag.Performers;
+                AlbumArtists = f.Tag.AlbumArtists;
+            }
         }
         public String MusicBrainzTrackId { get; set; }
         public string Title { get;  set; }
