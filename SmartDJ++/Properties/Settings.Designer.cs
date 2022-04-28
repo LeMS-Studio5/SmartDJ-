@@ -22,5 +22,27 @@ namespace SmartDJ__.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Collections.Specialized.StringCollection Paths {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["Paths"]));
+            }
+            set {
+                this["Paths"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Collections.Specialized.StringCollection Scores {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["Scores"]));
+            }
+            set {
+                this["Scores"] = value;
+            }
+        }
     }
 }

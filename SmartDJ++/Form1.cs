@@ -10,30 +10,75 @@ namespace SmartDJ__{
         Dictionary<String, double> Songscores = new Dictionary<String, double>();
         public Form1(){
             InitializeComponent();
+            LoadDirs();
+            LoadScores();
+            CompareFiles();
+        }
+        private void LoadDirs()
+        {
+            if (Properties.Settings.Default.Paths != null)
+            {
+                for (int i= 0;i < Properties.Settings.Default.Paths.Count;i++)
+                {
+                    String lin = Properties.Settings.Default.Paths[i];
+                    if (Directory.Exists(lin))
+                    {
+                        ScanFolder(lin);
+                    }
+                    else
+                    {
+                        if(MessageBox.Show(lin +" can not be found, would you like to remove it from the library?", "Folder can't be found", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                        {
+                            Properties.Settings.Default.Paths.RemoveAt(i);
+                        }
+                    }
+                }
+            }
+        }
+        private void LoadScores()
+        {
+            if (Properties.Settings.Default.Scores!=null)
+            {
+                for (int i = 0; i < Properties.Settings.Default.Scores.Count; i++){
+                    String lin = Properties.Settings.Default.Scores[i];
+                    if (!fileTags.ContainsKey(lin.Split(',')[0]) || !fileTags.ContainsKey(lin.Split(',')[1].Split(':')[0])) Properties.Settings.Default.Scores.RemoveAt(i);else
+                    Songscores.Add(lin.Split(':')[0], double.Parse(lin.Split(':')[1]));
+                }
+            }
+            Properties.Settings.Default.Save();
         }
         private String id(SongDetails song){
             if (song.MusicBrainzTrackId != null) return song.MusicBrainzTrackId; else return song.Title + song.Duration.TotalMilliseconds;
         }
         private void ScanFolder(string dirPath){
             foreach (String fil in Directory.GetFiles(dirPath, "*.mp3", SearchOption.AllDirectories)){
-                Status("Loading " + fil);
-                SongDetails S = new SongDetails(fil);
-                if (!fileTags.ContainsKey(id(S))){
-                    ListViewItem l = new ListViewItem("?");
-                    l.Tag = id(S);
-                    l.SubItems.Add(S.Title);
-                    l.SubItems.Add(S.Album);
-                    l.SubItems.Add(S.JoinedAlbumArtists);
-                    l.SubItems.Add(S.JoinedGenres);
-                    l.SubItems.Add(S.Year.ToString());
-                    listView1.Items.Add(l);
-                    listView2.Items.Add((ListViewItem)l.Clone());
-                    fileTags.Add(id(S), S);
+                try
+                {
+                    Status("Loading " + fil);
+                    SongDetails S = new SongDetails(fil);
+                    if (!fileTags.ContainsKey(id(S)))
+                    {
+                        ListViewItem l = new ListViewItem("?");
+                        l.Tag = id(S);
+                        l.SubItems.Add(S.Title);
+                        l.SubItems.Add(S.Album);
+                        l.SubItems.Add(S.JoinedAlbumArtists);
+                        l.SubItems.Add(S.JoinedGenres);
+                        l.SubItems.Add(S.Year.ToString());
+                        listView1.Items.Add(l);
+                        listView2.Items.Add((ListViewItem)l.Clone());
+                        fileTags.Add(id(S), S);
+                    }
+                }catch(Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
                 }
             }
         }
         private void btnOpenFolders_Click(object sender, EventArgs e){
-            if (fbdMusic.ShowDialog() == DialogResult.OK) { 
+            if (fbdMusic.ShowDialog() == DialogResult.OK) {
+                if (Properties.Settings.Default.Paths == null) Properties.Settings.Default.Paths = new System.Collections.Specialized.StringCollection();
+                Properties.Settings.Default.Paths.Add(fbdMusic.SelectedPath);
                 ScanFolder(fbdMusic.SelectedPath);
                 CompareFiles();
               }
@@ -42,23 +87,28 @@ namespace SmartDJ__{
         {
             String[] ids = new String[] { id1, id2 };
             Array.Sort(ids);
-            return ids[0]+ids[1];
+            return ids[0]+","+ids[1];
         }
         private void CompareFiles()
         {
-            foreach(KeyValuePair<String,SongDetails> keyValue in fileTags)
+            if (Properties.Settings.Default.Scores == null) Properties.Settings.Default.Scores = new System.Collections.Specialized.StringCollection();
+            foreach (KeyValuePair<String,SongDetails> keyValue in fileTags)
             {
                 foreach (KeyValuePair<String, SongDetails> keyValue2 in fileTags)
                 {
-                    //if (keyValue.Key != keyValue2.Key)
-                    {
-                        Status("Comparing " + keyValue.Value.Title + " to " + keyValue2.Value.Title);
-                        double s = Compare(keyValue.Value, keyValue2.Value);
                         String k = idsOrdered(keyValue.Key, keyValue2.Key);
-                        if (! Songscores.ContainsKey(k))Songscores.Add(k, s);
+                        if (!Songscores.ContainsKey(k))
+                        {
+                            Status("Comparing " + keyValue.Value.Title + " to " + keyValue2.Value.Title);
+                            double s = Compare(keyValue.Value, keyValue2.Value);
+                            Songscores.Add(k, s);
+                        //if (!Properties.Settings.Default.Scores.
+                        if (!Properties.Settings.Default.Scores.Contains(k + ":" + s))
+                        Properties.Settings.Default.Scores.Add(k + ":" + s);
                     }
                 }
             }
+            Properties.Settings.Default.Save();
         }
         private double inAnotherArray(String[] arr1,String[] arr2){
             if (arr1.Length == 0 && arr2.Length == 0) return 100;
@@ -97,6 +147,7 @@ namespace SmartDJ__{
         private void Status(String msg)
         {
             lblStatus.Text = "Status: " + msg;
+            Console.WriteLine(msg);
             lblScore.Invalidate();
         }
         private void btnCompare_Click(object sender, EventArgs e){
@@ -234,20 +285,6 @@ namespace SmartDJ__{
             //GFm = 84375,
             //Gm = 87500,
             //GSm = 90625,
-        }
-
-        private void btnSave_Click(object sender, EventArgs e)
-        {
-            if (sfdScores.ShowDialog() == DialogResult.OK)
-            {
-            List<String> lstScores = new List<string>();
-            foreach (KeyValuePair<String, double> keyValue in Songscores)
-            {
-                lstScores.Add(keyValue.Key + "," + keyValue.Value);
-            }
-                File.WriteAllLines(sfdScores.FileName, lstScores.ToArray());
-                MessageBox.Show("File Saved");
-            }
         }
     }
 }

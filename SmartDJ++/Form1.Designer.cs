@@ -54,7 +54,6 @@ namespace SmartDJ__
             this.lblScore = new System.Windows.Forms.Label();
             this.btnOpenFolders = new System.Windows.Forms.Button();
             this.lblStatus = new System.Windows.Forms.Label();
-            this.btnSave = new System.Windows.Forms.Button();
             this.sfdScores = new System.Windows.Forms.SaveFileDialog();
             this.SuspendLayout();
             // 
@@ -244,16 +243,6 @@ namespace SmartDJ__
             this.lblStatus.TabIndex = 10;
             this.lblStatus.Text = "Status:";
             // 
-            // btnSave
-            // 
-            this.btnSave.Location = new System.Drawing.Point(1338, 16);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(82, 23);
-            this.btnSave.TabIndex = 11;
-            this.btnSave.Text = "&Save Scores";
-            this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
             // sfdScores
             // 
             this.sfdScores.DefaultExt = "txt";
@@ -265,7 +254,6 @@ namespace SmartDJ__
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1432, 506);
-            this.Controls.Add(this.btnSave);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.btnOpenFolders);
             this.Controls.Add(this.lblScore);
@@ -274,6 +262,7 @@ namespace SmartDJ__
             this.Controls.Add(this.btnCompare);
             this.Controls.Add(this.listView2);
             this.Controls.Add(this.listView1);
+            this.DoubleBuffered = true;
             this.Name = "Form1";
             this.Text = "SmartDJ++";
             this.ResumeLayout(false);
@@ -307,7 +296,6 @@ namespace SmartDJ__
         private System.Windows.Forms.Label lblScore;
         private System.Windows.Forms.Button btnOpenFolders;
         private System.Windows.Forms.Label lblStatus;
-        private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.SaveFileDialog sfdScores;
     }
 }
