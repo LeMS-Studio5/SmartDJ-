@@ -39,10 +39,19 @@ namespace SmartDJ__{
         {
             if (Properties.Settings.Default.Scores!=null)
             {
-                for (int i = 0; i < Properties.Settings.Default.Scores.Count; i++){
+                for (int i = 0; i < Properties.Settings.Default.Scores.Count; i++)
+                {
                     String lin = Properties.Settings.Default.Scores[i];
-                    if (!fileTags.ContainsKey(lin.Split(',')[0]) || !fileTags.ContainsKey(lin.Split(',')[1].Split(':')[0])) Properties.Settings.Default.Scores.RemoveAt(i);else
-                    Songscores.Add(lin.Split(':')[0], double.Parse(lin.Split(':')[1]));
+                    if (lin != null && lin.Contains(","))
+                    {
+                        if (!fileTags.ContainsKey(lin.Split(',')[0]) || !fileTags.ContainsKey(lin.Split(',')[1].Split(':')[0])) { Properties.Settings.Default.Scores.RemoveAt(i); i--; }
+                        else
+                            Songscores.Add(lin.Split(':')[0], double.Parse(lin.Split(':')[1]));
+                    }else if (lin == null)
+                    {
+                        Properties.Settings.Default.Scores.RemoveAt(i);
+                        i--;
+                    }
                 }
             }
             Properties.Settings.Default.Save();
@@ -50,8 +59,12 @@ namespace SmartDJ__{
         private String id(SongDetails song){
             if (song.MusicBrainzTrackId != null) return song.MusicBrainzTrackId; else return song.Title + song.Duration.TotalMilliseconds;
         }
-        private void ScanFolder(string dirPath){
-            foreach (String fil in Directory.GetFiles(dirPath, "*.mp3", SearchOption.AllDirectories)){
+        private void ScanFolder(string dirPath) {
+            var fils = Directory.GetFiles(dirPath, "*.mp3", SearchOption.AllDirectories);
+            List<ListViewItem> lviList1 = new List<ListViewItem>();
+            List<ListViewItem> lviList2 = new List<ListViewItem>();
+            fils.AsParallel().ForAll(fil =>
+            {
                 try
                 {
                     Status("Loading " + fil);
@@ -65,15 +78,18 @@ namespace SmartDJ__{
                         l.SubItems.Add(S.JoinedAlbumArtists);
                         l.SubItems.Add(S.JoinedGenres);
                         l.SubItems.Add(S.Year.ToString());
-                        listView1.Items.Add(l);
-                        listView2.Items.Add((ListViewItem)l.Clone());
+                        lviList1.Add(l);
+                        lviList2.Add((ListViewItem)l.Clone());
                         fileTags.Add(id(S), S);
                     }
-                }catch(Exception ex)
+                }
+                catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
-            }
+            });
+            listView1.Items.AddRange(lviList1.ToArray());
+            listView2.Items.AddRange(lviList2.ToArray());
         }
         private void btnOpenFolders_Click(object sender, EventArgs e){
             if (fbdMusic.ShowDialog() == DialogResult.OK) {
@@ -92,23 +108,23 @@ namespace SmartDJ__{
         private void CompareFiles()
         {
             if (Properties.Settings.Default.Scores == null) Properties.Settings.Default.Scores = new System.Collections.Specialized.StringCollection();
-            foreach (KeyValuePair<String,SongDetails> keyValue in fileTags)
+            fileTags.AsParallel().ForAll(keyValue =>
             {
                 foreach (KeyValuePair<String, SongDetails> keyValue2 in fileTags)
                 {
-                        String k = idsOrdered(keyValue.Key, keyValue2.Key);
-                        if (!Songscores.ContainsKey(k))
-                        {
-                            Status("Comparing " + keyValue.Value.Title + " to " + keyValue2.Value.Title);
-                            double s = Compare(keyValue.Value, keyValue2.Value);
-                            Songscores.Add(k, s);
+                    String k = idsOrdered(keyValue.Key, keyValue2.Key);
+                    if (!Songscores.ContainsKey(k))
+                    {
+                        Status("Comparing " + keyValue.Value.Title + " to " + keyValue2.Value.Title);
+                        double s = Compare(keyValue.Value, keyValue2.Value);
+                        Songscores.Add(k, s);
                         //if (!Properties.Settings.Default.Scores.
                         if (!Properties.Settings.Default.Scores.Contains(k + ":" + s))
-                        Properties.Settings.Default.Scores.Add(k + ":" + s);
+                            Properties.Settings.Default.Scores.Add(k + ":" + s);
                     }
                 }
-            }
             Properties.Settings.Default.Save();
+            });
         }
         private double inAnotherArray(String[] arr1,String[] arr2){
             if (arr1.Length == 0 && arr2.Length == 0) return 100;
@@ -146,9 +162,7 @@ namespace SmartDJ__{
         }
         private void Status(String msg)
         {
-            lblStatus.Text = "Status: " + msg;
             Console.WriteLine(msg);
-            lblScore.Invalidate();
         }
         private void btnCompare_Click(object sender, EventArgs e){
             String fil1 = listView1.FocusedItem.Tag.ToString();
