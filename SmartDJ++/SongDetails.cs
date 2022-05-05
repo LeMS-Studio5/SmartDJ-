@@ -7,6 +7,7 @@ namespace SmartDJ__{
             if (!File.Exists(songPath)) throw new Exception("File does not exists");
             else
             {
+                FileLocation = songPath;
                 TagLib.File f = TagLib.File.Create(songPath);
                 MusicBrainzTrackId = f.Tag.MusicBrainzTrackId;
                 Title = f.Tag.Title;
@@ -24,6 +25,7 @@ namespace SmartDJ__{
                 AlbumArtists = f.Tag.AlbumArtists;
             }
         }
+        public String FileLocation { get; set; }
         public String MusicBrainzTrackId { get; set; }
         public string Title { get;  set; }
         public TimeSpan Duration { get;  set; }
