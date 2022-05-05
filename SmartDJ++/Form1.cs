@@ -10,9 +10,6 @@ namespace SmartDJ__{
         Dictionary<String, double> Songscores = new Dictionary<String, double>();
         public Form1(){
             InitializeComponent();
-            LoadDirs();
-            LoadScores();
-            CompareFiles();
         }
         private void LoadDirs()
         {
@@ -113,11 +110,11 @@ namespace SmartDJ__{
                 foreach (KeyValuePair<String, SongDetails> keyValue2 in fileTags)
                 {
                     String k = idsOrdered(keyValue.Key, keyValue2.Key);
-                    if (!Songscores.ContainsKey(k))
+                    if (!Songscores.ContainsKey(k) && (keyValue.Value!=null && keyValue2.Value!=null))
                     {
                         Status("Comparing " + keyValue.Value.Title + " to " + keyValue2.Value.Title);
                         double s = Compare(keyValue.Value, keyValue2.Value);
-                        Songscores.Add(k, s);
+                        if (!Songscores.ContainsKey(k)) Songscores.Add(k, s);
                         //if (!Properties.Settings.Default.Scores.
                         if (!Properties.Settings.Default.Scores.Contains(k + ":" + s))
                             Properties.Settings.Default.Scores.Add(k + ":" + s);
@@ -167,7 +164,8 @@ namespace SmartDJ__{
         private void btnCompare_Click(object sender, EventArgs e){
             String fil1 = listView1.FocusedItem.Tag.ToString();
             for (int i=0; i < listView2.Items.Count; i++){
-                listView2.Items[i].SubItems[0].Text = Songscores[idsOrdered(fil1, listView2.Items[i].Tag.ToString())].ToString("000.00");
+                String k = idsOrdered(fil1, listView2.Items[i].Tag.ToString());
+                listView2.Items[i].SubItems[0].Text = Songscores.ContainsKey(k) ?Songscores[k].ToString("000.00"):"?";
             }
             listView2.Sort();
         }
@@ -299,6 +297,25 @@ namespace SmartDJ__{
             //GFm = 84375,
             //Gm = 87500,
             //GSm = 90625,
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            LoadDirs();
+            LoadScores();
+            CompareFiles();
+        }
+
+        private void btnPlaylist_Click(object sender, EventArgs e)
+        {
+            String fil1 = listView1.FocusedItem.Tag.ToString();
+            Dictionary<String, double> d = new Dictionary<String, Double>();
+            for (int i = 0; i < listView2.Items.Count; i++)
+            {
+                String k = idsOrdered(fil1, listView2.Items[i].Tag.ToString());
+                d.Add(fileTags[listView2.Items[i].Tag.ToString()].FileLocation, Songscores[k]);
+            }
+                Console.WriteLine(String.Join(",",d.OrderBy(x =>100-x.Value).Take(5)).ToArray());
         }
     }
 }

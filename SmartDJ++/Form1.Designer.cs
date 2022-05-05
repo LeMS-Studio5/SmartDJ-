@@ -55,6 +55,7 @@ namespace SmartDJ__
             this.btnOpenFolders = new System.Windows.Forms.Button();
             this.lblStatus = new System.Windows.Forms.Label();
             this.sfdScores = new System.Windows.Forms.SaveFileDialog();
+            this.btnPlaylist = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // fbdMusic
@@ -249,11 +250,22 @@ namespace SmartDJ__
             this.sfdScores.Filter = "Text Files|*.txt";
             this.sfdScores.RestoreDirectory = true;
             // 
+            // btnPlaylist
+            // 
+            this.btnPlaylist.Location = new System.Drawing.Point(758, 11);
+            this.btnPlaylist.Name = "btnPlaylist";
+            this.btnPlaylist.Size = new System.Drawing.Size(82, 23);
+            this.btnPlaylist.TabIndex = 11;
+            this.btnPlaylist.Text = "Create &Playlist";
+            this.btnPlaylist.UseVisualStyleBackColor = true;
+            this.btnPlaylist.Click += new System.EventHandler(this.btnPlaylist_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1432, 506);
+            this.Controls.Add(this.btnPlaylist);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.btnOpenFolders);
             this.Controls.Add(this.lblScore);
@@ -265,6 +277,7 @@ namespace SmartDJ__
             this.DoubleBuffered = true;
             this.Name = "Form1";
             this.Text = "SmartDJ++";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -297,6 +310,7 @@ namespace SmartDJ__
         private System.Windows.Forms.Button btnOpenFolders;
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.SaveFileDialog sfdScores;
+        private System.Windows.Forms.Button btnPlaylist;
     }
 }
 
